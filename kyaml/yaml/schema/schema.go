@@ -36,7 +36,7 @@ func schemaHasMergeStrategy(schema *openapi.ResourceSchema) bool {
 	tmp, _ := schema.PatchStrategyAndKeyList()
 	strategies := strings.Split(tmp, ",")
 	for _, s := range strategies {
-		if s == "merge" || s == "map" || s == "set" {
+		if s == "merge" || s == "map" {
 			return true
 		}
 	}
