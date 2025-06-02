@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"sigs.k8s.io/kustomize/api/ifc"
+	"sigs.k8s.io/kustomize/kyaml/openapi"
 	fLdr "sigs.k8s.io/kustomize/api/internal/loader"
 	pLdr "sigs.k8s.io/kustomize/api/internal/plugins/loader"
 	"sigs.k8s.io/kustomize/api/konfig"
@@ -103,6 +104,7 @@ func (th *HarnessEnhanced) MkDir(path string) string {
 }
 
 func (th *HarnessEnhanced) Reset() {
+	openapi.ResetOpenAPI()
 	if th.shouldWipeLdrRoot {
 		root, _ := filepath.EvalSymlinks(th.ldr.Root())
 		tmpdir, _ := filepath.EvalSymlinks(os.TempDir())
