@@ -12,6 +12,7 @@ import (
 
 	"sigs.k8s.io/kustomize/api/ifc"
 	fLdr "sigs.k8s.io/kustomize/api/internal/loader"
+	"sigs.k8s.io/kustomize/kyaml/openapi"
 	pLdr "sigs.k8s.io/kustomize/api/internal/plugins/loader"
 	"sigs.k8s.io/kustomize/api/konfig"
 	"sigs.k8s.io/kustomize/api/provider"
@@ -47,6 +48,7 @@ type HarnessEnhanced struct {
 
 func MakeEnhancedHarness(t *testing.T) *HarnessEnhanced {
 	t.Helper()
+	openapi.ResetOpenAPI()
 	r := makeBaseEnhancedHarness(t)
 	r.Harness = MakeHarnessWithFs(t, filesys.MakeFsInMemory())
 	// Point the Harness's file loader to the root ('/')
@@ -103,6 +105,7 @@ func (th *HarnessEnhanced) MkDir(path string) string {
 }
 
 func (th *HarnessEnhanced) Reset() {
+	openapi.ResetOpenAPI()
 	if th.shouldWipeLdrRoot {
 		root, _ := filepath.EvalSymlinks(th.ldr.Root())
 		tmpdir, _ := filepath.EvalSymlinks(os.TempDir())
