@@ -314,14 +314,7 @@ func (l Walker) elementValues(keys []string) [][]string {
 	var returnValues [][]string
 	var seen sets.StringList
 
-	// if we are doing append, dest node should be the first.
-	// otherwise dest node should be the last.
-	beginIdx := 0
-	if l.MergeOptions.ListIncreaseDirection == yaml.MergeOptionsListPrepend {
-		beginIdx = 1
-	}
-	for i := range l.Sources {
-		src := l.Sources[(i+beginIdx)%len(l.Sources)]
+	for i, src := range l.Sources {
 		if src == nil {
 			continue
 		}
@@ -333,7 +326,11 @@ func (l Walker) elementValues(keys []string) [][]string {
 			if len(s) == 0 || seen.Has(s) {
 				continue
 			}
-			returnValues = append(returnValues, s)
+			if i == 0 || l.MergeOptions.ListIncreaseDirection == yaml.MergeOptionsListAppend {
+				returnValues = append(returnValues, s)
+			} else {
+				returnValues = append([][]string{s}, returnValues...)
+			}
 			seen = seen.Insert(s)
 		}
 	}
